@@ -1,14 +1,14 @@
 #!/bin/bash - 
 #===============================================================================
 #
-#          FILE: mcstart.sh
+#          FILE: dwcp.sh
 # 
-#         USAGE: ./mcstart.sh 
+#         USAGE: ./dwcp.sh 
 # 
-#   DESCRIPTION: Start script for a minecraft Server
+#   DESCRIPTION: Control Panel for a minecraft/direwolf20 Server
 # 
 #       OPTIONS: ---
-#  REQUIREMENTS: screen, java
+#  REQUIREMENTS: screen, java, rlwrap
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Robin Cerny (rc), tschaerni@gmail.com
@@ -340,7 +340,7 @@ fi
 
 		compresslog)
 			zip -r -j $BASEDIR/logs/serverlog.zip $BASEDIR/logs/output_*.log && rm $BASEDIR/logs/output_*.log
-
+		;;
 
 		help|*)
 			# some usage informations
