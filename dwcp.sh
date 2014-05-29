@@ -268,7 +268,8 @@ fi
 			then
 				clear
 			else
-				clear exit 1
+				clear
+				exit 1
 			fi
 
 			ANSWER=0
@@ -326,7 +327,7 @@ fi
 				if ps aux | grep $SERVICE | grep -v grep | grep -v tee | grep -v rlwrap >/dev/null
 				then
 					dialog --backtitle "DWCP - Direwolf Control Panel" --msgbox\
-						"for return, press and hold the Buttons [CTRL LEFT], [A] and [D]" 5 67
+						"for return, press and hold the buttons [CTRL LEFT], [A] and [D]" 5 67
 					screen -rx $SCREENSESSION
 				else
 					dialog --backtitle "DWCP - Direwolf Control Panel" --msgbox\
