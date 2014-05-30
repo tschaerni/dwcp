@@ -297,7 +297,7 @@ fi
 				fi
 
 				sleep 0.5
-				if grep "\[INFORMATION\] Pong\!" $BASEDIR/logs/output.log >/dev/null
+				if grep "\[INFO\] Pong\!" $BASEDIR/logs/output.log >/dev/null
 				then
 					dialog --backtitle "DWCP - Direwolf Control Panel" --msgbox\
 						"$SERVICE is running and Responsive" 5 67
