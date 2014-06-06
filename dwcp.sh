@@ -29,6 +29,7 @@ BACKUPHISTORY=3
 #=================================================================================================
 BASEDIR=$(dirname `readlink -f $0`)
 SCREENSESSION=direwolf
+LOCK=$BASEDIR/shutdown.lock
 TIMESTAMP=$(date '+%b_%d_%Y_%H.%M.%S')
 #=================================================================================================
 dw_start(){
@@ -57,7 +58,7 @@ dw_start(){
 			mv $BASEDIR/logs/output.log $MOVELOG
 		fi
 
-		screen -dmS $SCREENSESSION -m sh -c "ionice -c2 -n0 nice -n -10 rlwrap java -Xmx$MAXMEMORY -Xms$MINMEMORY -XX:PermSize=256M -XX:MaxPermSize=512M -XX:UseSSE=4 -XX:ParallelGCThreads=8 -XX:+UseConcMarkSweepGC -XX:+UseCMSCompactAtFullCollection -XX:+UseParNewGC -XX:+DisableExplicitGC -XX:+AggressiveOpts -d64 -jar $SERVICE nogui 2>&1 | tee $BASEDIR/logs/output.log"
+		screen -dmS $SCREENSESSION -m sh -c "while [ ! -e $LOCK ] ; then ; ionice -c2 -n0 nice -n -10 rlwrap java -Xmx$MAXMEMORY -Xms$MINMEMORY -XX:PermSize=256M -XX:MaxPermSize=512M -XX:UseSSE=4 -XX:ParallelGCThreads=8 -XX:+UseConcMarkSweepGC -XX:+UseCMSCompactAtFullCollection -XX:+UseParNewGC -XX:+DisableExplicitGC -XX:+AggressiveOpts -d64 -jar $SERVICE nogui 2>&1 | tee $BASEDIR/logs/output.log ; fi"
 		
 		sleep 7
 		if ps aux | grep $SERVICE | grep -v grep | grep -v tee | grep -v rlwrap >/dev/null
@@ -97,6 +98,7 @@ dw_stop(){
 		sleep 2
 		screen -S $SCREENSESSION -p 0 -X stuff "save-all$(printf \\r)"
 		echo "Saving Database"
+		touch $LOCK
 		sleep 10
 		screen -S $SCREENSESSION -p 0 -X stuff "stop$(printf \\r)"
 		sleep 60
@@ -114,6 +116,7 @@ dw_stop(){
 				screen -wipe
 			fi
 		fi
+		rm $LOCK
 	else
 		echo "$SERVICE not running"
 	fi
